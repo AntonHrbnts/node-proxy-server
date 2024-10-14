@@ -1,3 +1,8 @@
+const express = require("express")
 const feed = require('./nasa/nasa.client.js')
+const app = express();
 
-console.log(feed())
+app.listen(8000, ()=> {
+    console.log("Server started, port: 8000")
+})
+feed()
