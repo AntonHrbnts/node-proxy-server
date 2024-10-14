@@ -12,4 +12,6 @@ const options = {
     method: 'GET'
   };
 
-  module.exports = options
+ const meteors_path = "https://" +  options.hostname + feed_path;
+
+  module.exports = { meteors_path, options }

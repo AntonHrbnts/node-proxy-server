@@ -1,16 +1,14 @@
 const https = require('https')
-const options = require('./nasa.options.js')
+const axios = require('axios')
+const { meteors_path, options } = require('./nasa.options.js')
 
-function getMeteors(){
-  return 'qwer';
-}
 
-const feed = (()=>{ 
+const feed = (() => {
   const req = https.request(options, (res) => {
 
     console.log('statusCode:', res.statusCode);
     console.log('headers:', res.headers);
-  
+
     let rawData = '';
     res.on('data', (chunk) => { rawData += chunk; });
 
@@ -31,4 +29,20 @@ const feed = (()=>{
   req.end();
 });
 
-module.exports = { feed, getMeteors}
+async function getMeteors(params) {
+  try {
+    const response = await axios.get(meteors_path);
+    return response;
+  } catch (error) {
+    if (error.response) {
+      console.error(error.response.satus + ": " + error.response.data)
+    } else if (error.request) {
+
+      console.error(error.request.satus + ": " + error.request.data)
+    } else {
+      console.error(error.message)
+    }
+  }
+}
+
+module.exports = { feed, getMeteors }

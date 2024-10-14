@@ -1,17 +1,30 @@
 const express = require("express")
-const axios = require('axios')
 
-const feed = require('./nasa/nasa.client.js')
+const nasa = require('./nasa/nasa.client.js')
 const app = express();
 
 app.listen(8000, ()=> {
     console.log("Server started, port: 8000")
 })
 
-app.get('/meteors', (req, res) => {
-    axios.get('https://api.nasa.gov/neo/rest/v1/feed?start_date=2015-09-07&end_date=2015-09-08&api_key=jdT7geV5iPWY5TJWt94rKcO7usE2JQuVWFsX2UkG')
-    .then(response => {
-        console.log(response)
-        res.send(response.data)})
-    .catch(error => {console.log(error)})
+app.get('/meteors', async (req, res) => {
+    let meteors = await nasa.getMeteors();
+    console.log(meteors)
+    const meteorData = meteors.data.near_earth_objects;
+    const allMeteors = Object.values(meteorData).flat();
+    if(!Array.isArray(allMeteors)){
+        res.send("meteors are not array")
+    }
+    const adaptedMeteors = allMeteors.map(meteor => ({
+        id: meteor.id,
+        name: meteor.name,
+        diameter: meteor.estimated_diameter.meters,
+        is_potentially_hazardous_asteroid: meteor.is_potentially_hazardous_asteroid,
+        close_approach_data: meteor.close_approach_data.map(data => ({
+            close_approach_date_full: data.close_approach_date_full,
+            kilometers_per_second: data.relative_velocity.kilometers_per_second
+        }))
+    }));
+
+    res.send(adaptedMeteors)
 })
