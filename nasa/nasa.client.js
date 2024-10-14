@@ -1,8 +1,13 @@
 const https = require('https')
 const options = require('./nasa.options.js')
 
+function getMeteors(){
+  return 'qwer';
+}
+
 const feed = (()=>{ 
   const req = https.request(options, (res) => {
+
     console.log('statusCode:', res.statusCode);
     console.log('headers:', res.headers);
   
@@ -17,6 +22,7 @@ const feed = (()=>{
         console.error(e.message);
       }
     });
+    return rawData;
   });
   req.on('error', (e) => {
     console.error(e);
@@ -25,4 +31,4 @@ const feed = (()=>{
   req.end();
 });
 
-module.exports = feed
+module.exports = { feed, getMeteors}
