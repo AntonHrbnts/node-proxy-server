@@ -1,2 +1,2 @@
-const meteor = require('./delivery/meteor.js')
+const meteor = require('./Delivery/meteor.router.js')
 
