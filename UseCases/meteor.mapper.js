@@ -1,4 +1,5 @@
 function modify(meteors) {
+    console.log(meteors)
     const meteorData = meteors.data.near_earth_objects;
     const allMeteors = Object.values(meteorData).flat();
 

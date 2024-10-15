@@ -1,5 +1,7 @@
 const https = require('https')
 const axios = require('axios')
+const {URL} = require('url')
+
 const { meteors_path, options } = require('./nasa.options.js')
 
 
@@ -29,10 +31,13 @@ const feed = (() => {
   req.end();
 });
 
-async function getMeteors(params) {
+async function getMeteors(startDate, endDate) {
   try {
-    const response = await axios.get(meteors_path);
-    return response;
+    meteors_url = new URL(meteors_path);
+    meteors_url.searchParams.append('start_date', startDate);
+    meteors_url.searchParams.append('end_date', endDate);
+
+    return await axios.get(meteors_url.toString());
   } catch (error) {
     if (error.response) {
       console.error(error.response.satus + ": " + error.response.data)
