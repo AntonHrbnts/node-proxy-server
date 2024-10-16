@@ -1,40 +1,37 @@
-const nasa = require('../nasa/nasa.client.js')
-const mapper = require('./meteor.mapper.js')
+const nasa = require('../nasa/nasaClient.js')
+const adapt = require('./meteorAdaptor.js')
+const dateUtils = require('../utils/dateUtils.js')
 
-const getMeteorsObjects = async function (request) {
-    var startDateOrDefault = getStartDateOrDefault(request.query.start_date);
-    var endDateOrDefault = getEndDateOrDefault(request.query.end_date, startDateOrDefault);
+exports.getMeteorsObjects = async function (request) {
+    const startDateOrDefault = dateUtils.getStartDateOrDefault(request.query.start_date);
+    const endDateOrDefault = dateUtils.getEndDateOrDefault(request.query.end_date, startDateOrDefault);
 
     let meteors = await nasa.getMeteors(
         startDateOrDefault,
         endDateOrDefault
     );
-
-    let adaptedMeteors = mapper(meteors, request.query)
-    return adaptedMeteors;
+    return adapt(meteors, request.query)
 }
 
-const getMeteors = async (request, response) => {
+exports.getMeteors = async (request, response) => {
     try {
-        let meteors = await getMeteorsObjects(request);
+        let meteors = await this.getMeteorsObjects(request);
         response.send(meteors);
     } catch (error) {
         throw new Error('Error getting data from NASA: ' + error);
     }
 };
 
-function getStartDateOrDefault(startDate) {
-    return startDate || new Date().toISOString().split('T')[0];
-}
+exports.postPicture = async (request, response) => {
+    try {
+        const {userId, userName, API_KEY} = request.body
 
-function getEndDateOrDefault(endDate, startDate) {
+        console.log('userId:' + userId)
+        console.log('userName:' + userName)
 
-    if (endDate) {
-        return endDate
+        let image = await nasa.getMostRecentImage(API_KEY);
+        response.send(image);
+    } catch (error) {
+        throw new Error('Error getting data from NASA: ' + error);
     }
-    var date = new Date();
-    date.setDate(date.getDate() - 1);
-    return date.toISOString().split('T')[0];
-}
-
-module.exports = { getMeteors, getMeteorsObjects}
+};
