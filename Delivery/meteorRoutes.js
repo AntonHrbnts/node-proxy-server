@@ -4,7 +4,7 @@ const meteorController = require('../UseCases/meteorController.js')
 
 const nunjucks = require('nunjucks')
 
-nunjucks.configure('views', {
+nunjucks.configure('templates', {
     autoescape: true,
     express: app
 })
@@ -15,3 +15,8 @@ app.listen(8000, ()=> {
 })
 
 app.get('/meteors', meteorController.getMeteors);
+app.get('/meteorsView', async (req, res) => {
+    const meteors = await meteorController.getMeteorsObjects(req,res);
+    console.log('meteorsView data: ' + meteors);
+    res.render('meteors.njk', {meteors})
+});

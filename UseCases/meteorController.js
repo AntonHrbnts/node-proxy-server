@@ -1,7 +1,7 @@
 const nasa = require('../nasa/nasa.client.js')
 const mapper = require('./meteor.mapper.js')
 
-async function getMeteorsObjects(request) {
+const getMeteorsObjects = async function (request) {
     var startDateOrDefault = getStartDateOrDefault(request.query.start_date);
     var endDateOrDefault = getEndDateOrDefault(request.query.end_date, startDateOrDefault);
 
@@ -23,15 +23,6 @@ const getMeteors = async (request, response) => {
     }
 };
 
-const getMeteorsView = async (request, response) => {
-    try {
-        var meteors = getMeteorsObjects(request);
-    } catch (error) {
-        throw new Error('Error getting data from NASA: ' + error);
-    }
-};
-
-
 function getStartDateOrDefault(startDate) {
     return startDate || new Date().toISOString().split('T')[0];
 }
@@ -46,4 +37,4 @@ function getEndDateOrDefault(endDate, startDate) {
     return date.toISOString().split('T')[0];
 }
 
-module.exports = getMeteors
+module.exports = { getMeteors, getMeteorsObjects}
