@@ -22,6 +22,14 @@ exports.getMeteors = async (request, response) => {
     }
 };
 
+exports.meteorsView = function () {
+    return async (req, res) => {
+        const meteors = await meteorController.getMeteorsObjects(req, res);
+        console.log('meteorsView data: ' + meteors);
+        res.render('meteors.njk', {meteors})
+    };
+}
+
 exports.postPicture = async (request, response) => {
     try {
         const {userId, userName, API_KEY} = request.body
