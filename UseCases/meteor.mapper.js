@@ -1,7 +1,16 @@
-function modify(meteors) {
+function modify(meteors, query) {
     console.log(meteors)
     const meteorData = meteors.data.near_earth_objects;
-    const allMeteors = Object.values(meteorData).flat();
+    var allMeteors = Object.values(meteorData).flat();
+
+    var dangerous = query.dangerous;
+    if (dangerous === 'true') {
+        allMeteors = allMeteors.filter((meteor) => meteor.is_potentially_hazardous_asteroid)
+    } else if (dangerous === 'false') {
+        allMeteors = allMeteors.filter((meteor) => !meteor.is_potentially_hazardous_asteroid)
+    }
+
+    allMeteors = query.count ? allMeteors.slice(0, query.count) : allMeteors;
 
     const adaptedMeteors = allMeteors.map(meteor => ({
         id: meteor.id,
