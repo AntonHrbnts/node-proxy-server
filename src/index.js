@@ -1,5 +1,4 @@
 const express = require("express");
-const path = require("path");
 const nunjucks = require("nunjucks");
 const config = require("./config/config.js");
 const meteorController = require("./controllers/meteorController.js");

@@ -11,7 +11,7 @@ const getMeteors = async (req, res, next) => {
             count: Joi.number().min(1).optional(),
             wereDangerousMeteors: Joi.bool().optional(),
         })
-        const {error, value} = schema.validate(req.query)
+        const {error} = schema.validate(req.query)
         if (error) {
             return next(error);
         }
@@ -40,7 +40,7 @@ const meteorsView = async (req, res, next) => {
             count: Joi.number().min(1).optional(),
             wereDangerousMeteors: Joi.bool().optional(),
         })
-        const {error, value} = schema.validate(req.query)
+        const {error} = schema.validate(req.query)
         if (error) {
             return next(error);
         }
@@ -69,7 +69,7 @@ const postPicture = async (req, res, next) => {
             userName: Joi.string().min(3).max(50).required()
         })
 
-        const {error, value} = schema.validate(req.body)
+        const {error} = schema.validate(req.body)
         if (error) {
             return next(error);
         }
@@ -100,7 +100,6 @@ const postPictureView = async (req, res, next) => {
         console.log("userName:" + userName);
 
         const image = await nasaRepository.getMostRecentImage();
-        console.log("image:" + image.img_src);
         res.render("recentPhoto.njk", image)
     } catch (error) {
         next(error);

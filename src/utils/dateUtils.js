@@ -9,7 +9,7 @@ function getEndDateOrDefault (endDate) {
     if (endDate) {
         return endDate
     }
-    var date = new Date();
+    let date = new Date();
     date.setDate(date.getDate() - 1);
     return format(date, "yyyy-MM-dd");
 }
