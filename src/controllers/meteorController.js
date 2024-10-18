@@ -84,4 +84,27 @@ const postPicture = async (req, res, next) => {
     }
 };
 
-module.exports = {getMeteors, meteorsView, postPicture};
+const postPictureView = async (req, res, next) => {
+    try {
+        const schema = Joi.object({
+            userId: Joi.number().min(1).required(),
+            userName: Joi.string().min(3).max(50).required()
+        })
+
+        const {error, value} = schema.validate(req.body)
+        if (error) {
+            return next(error);
+        }
+        const {userId, userName} = req.body;
+        console.log("userId:" + userId);
+        console.log("userName:" + userName);
+
+        const image = await nasaRepository.getMostRecentImage();
+        console.log("image:" + image.img_src);
+        res.render("recentPhoto.njk", image)
+    } catch (error) {
+        next(error);
+    }
+};
+
+module.exports = {getMeteors, meteorsView, postPicture, postPictureView};

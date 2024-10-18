@@ -18,6 +18,7 @@ app.use(express.json());
 app.get("/meteors", meteorController.getMeteors);
 app.get("/meteorsView", meteorController.meteorsView);
 app.post("/picture", meteorController.postPicture);
+app.post("/pictureView", meteorController.postPictureView);
 
 app.use(errorHandler);
 
