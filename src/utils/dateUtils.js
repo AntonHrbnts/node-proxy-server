@@ -1,14 +1,17 @@
-exports.getStartDateOrDefault = function (startDate) {
-    return startDate || new Date().toISOString().split('T')[0];
+const {format} = require("date-fns");
+
+function getStartDateOrDefault(startDate) {
+    return startDate || format(new Date(), "yyyy-MM-dd");
 }
 
-exports.getEndDateOrDefault = function (endDate, startDate) {
+function getEndDateOrDefault (endDate) {
 
     if (endDate) {
         return endDate
     }
     var date = new Date();
-    //todo fix bug(if start_date in query and end_date is not present)
-    date.setDate(startDate || date.getDate() - 1);
-    return date.toISOString().split('T')[0];
+    date.setDate(date.getDate() - 1);
+    return format(date, "yyyy-MM-dd");
 }
+
+module.exports = {getStartDateOrDefault, getEndDateOrDefault};

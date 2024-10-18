@@ -12,7 +12,7 @@ async function getMeteors(startDate, endDate) {
             },
         }
     );
-
+    console.log(axiosResponse.data);
     return axiosResponse.data.near_earth_objects;
 }
 

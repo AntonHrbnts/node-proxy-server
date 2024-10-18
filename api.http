@@ -1,6 +1,8 @@
 GET http://localhost:8000/meteors?start_date=2015-09-07&end_date=2015-09-09
 ###
-GET http://localhost:8000/meteorsView?start_date=2000-01-01&end_date=2000-01-03&dangerous=false
+GET http://localhost:8000/meteors
+###
+GET http://localhost:8000/meteorsView?start_date=2000-01-01&end_date=2000-01-03&wereDangerousMeteors=true&count=3
 ###
 POST http://localhost:8000/picture?API_KEY=DEMO_KEY
 Content-Type: application/json
